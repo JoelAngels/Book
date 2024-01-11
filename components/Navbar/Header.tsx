@@ -274,6 +274,16 @@ function Header() {
                   Flight + Hotel
                 </a>
               </div>
+
+              {/* Login */}
+              <div className="py-6">
+                <a
+                  href="#"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-blue-800"
+                >
+                  Log In
+                </a>
+              </div>
             </div>
           </div>
         </Dialog.Panel>
