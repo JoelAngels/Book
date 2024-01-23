@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import {
   Form,
   FormControl,
@@ -18,6 +19,9 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { BedDoubleIcon, CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar } from "./ui/calendar";
 
 export const formSchema = z.object({
   // location: z.string().min(2, "Must be 2 characters or more").max(50),
@@ -91,6 +95,71 @@ function SearchForm() {
               </FormItem>
             )}
           />
+        </div>
+
+        {/* Date Picker */}
+
+        <div className="grid w-full lg:max-w-sm flex-1 items-center gap-1.5">
+          <FormField
+            control={form.control}
+            name="dates"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel className="text-white">Dates</FormLabel>
+                <FormMessage />
+
+                {/* Date Popover */}
+
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        id="date"
+                        name="dates"
+                        variant={"outline"}
+                        className={cn(
+                          "w-full lg:w-[300px] justify-start text-left font-normal",
+                          // If you haven't selected a form value, mute the foreground
+                          !field.value.from && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-3 h-4 w-4 opacity-50" />
+                        {/* If you selected a form and to value, it will show data you've selected which are the dates from and to */}
+                        {field.value?.from ? (
+                          field.value?.to ? (
+                            <>
+                              {format(field.value?.from, "LLL dd, y")} -{" "}
+                              {format(field.value?.to, "LLL dd, y")}
+                            </>
+                          ) : (
+                            format(field.value?.from, "LLL dd, y")
+                          )
+                        ) : (
+                          <span>Select your dates</span>
+                        )}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+
+                  {/* Popover Content, the trigger cannot work without the content */}
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      initialFocus
+                      mode="range"
+                      selected={field.value}
+                      defaultMonth={field.value.from}
+                      onSelect={field.onChange}
+                      numberOfMonths={2}
+                      // Disabled any date which has a previous to now, e.g someone wants to book yesterday, doesn't make sense
+                      disabled={(date) =>
+                        date < new Date(new Date().setHours(0, 0, 0, 0))
+                      }
+                    />
+                  </PopoverContent>
+                </Popover>
+              </FormItem>
+            )}
+          ></FormField>
         </div>
       </form>
     </Form>
