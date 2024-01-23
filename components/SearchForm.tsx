@@ -66,7 +66,32 @@ function SearchForm() {
   });
 
   //Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {}
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+
+    const checkin_monthday = values.dates.from.getDate().toString();
+    const checkin_month = (values.dates.from.getMonth() + 1).toString();
+    const checkin_year = values.dates.from.getFullYear().toString();
+
+    const checkout_monthday = values.dates.to.getDate().toString();
+    const checkout_month = (values.dates.to.getMonth() + 1).toString();
+    const checkout_year = values.dates.to.getFullYear().toString();
+
+    const checkin = `${checkin_year}-${checkin_month}-${checkin_monthday}`;
+    const checkout = `${checkout_year}-${checkout_month}-${checkout_monthday}`;
+
+    // Passing the data now with url search params to pass our values
+    const url = new URL("https://www.booking.com/searchresults.html");
+    url.searchParams.set("ss", values.location);
+    url.searchParams.set("group_adults", values.adults);
+    url.searchParams.set("group_children", values.children);
+    url.searchParams.set("no_rooms", values.rooms);
+    url.searchParams.set("checkin", checkin);
+    url.searchParams.set("checkout", checkout);
+
+    // Redirect the user to the url
+    router.push(`/search?url=${url.href}`);
+  }
 
   return (
     <Form {...form}>
@@ -118,8 +143,8 @@ function SearchForm() {
                         name="dates"
                         variant={"outline"}
                         className={cn(
-                          "w-full lg:w-[300px] justify-start text-left font-normal",
-                          // If you haven't selected a form value, mute the foreground
+                          " w-full lg:w-[300px] justify-start text-left font-normal",
+                          // If you haven't selected a form value, mute the foreground line 121 set width to w-300px
                           !field.value.from && "text-muted-foreground"
                         )}
                       >
