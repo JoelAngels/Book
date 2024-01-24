@@ -10,7 +10,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -184,7 +183,7 @@ function SearchForm() {
                 </Popover>
               </FormItem>
             )}
-          ></FormField>
+          />
         </div>
 
         {/* Adults Children Room and Search Button*/}
