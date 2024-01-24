@@ -156,7 +156,6 @@ export async function fetchResults(searchParams: SearchParams) {
       if (data.results.length === 0) return; //return since you did not find any data
       //otherwise access the first data argument
       const result: Result = data.results[0];
-
       return result;
     })
     .catch((err) => console.log(err));
