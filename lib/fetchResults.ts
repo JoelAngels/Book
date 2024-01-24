@@ -160,4 +160,6 @@ export async function fetchResults(searchParams: SearchParams) {
       return result;
     })
     .catch((err) => console.log(err));
+
+  return response;
 }

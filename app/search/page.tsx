@@ -22,7 +22,9 @@ async function SearchPage({ searchParams }: Props) {
 
   const results = await fetchResults(searchParams);
 
-  //   if (!results) return <div>Search Page</div>;
+  if (!results) return <div>Search Page</div>;
+  console.log(results);
+
   return <div>Search Page</div>;
 }
 
